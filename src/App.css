@@ -589,6 +589,155 @@ html, body, #root {
   text-overflow: ellipsis;
 }
 
+
+.calendar-event-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* WEEK VIEW */
+.calendar-week-view {
+  overflow-x: auto;
+}
+
+.week-header-row {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  gap: 1px;
+  background: #1e1e1e;
+  border-bottom: 1px solid #1e1e1e;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.week-col-header {
+  background: #141414;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  gap: 2px;
+}
+
+.week-col-header.today {
+  background: #1a2a1a;
+}
+
+.week-col-dayname {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.week-col-daynum {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.week-col-daynum.today-num {
+  color: #00ff41;
+}
+
+.week-body {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.week-hour-row {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  gap: 1px;
+  min-height: 56px;
+}
+
+.week-time-gutter {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 4px 8px 0 0;
+}
+
+.week-time-label {
+  font-size: 10px;
+  color: #555;
+  white-space: nowrap;
+}
+
+.week-cell {
+  border-bottom: 1px solid #1a1a1a;
+  border-right: 1px solid #1a1a1a;
+  padding: 2px;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-height: 56px;
+}
+
+.week-cell:hover {
+  background: #1a1a1a;
+}
+
+.week-event-chip {
+  padding: 3px 6px;
+  border-radius: 3px;
+  margin-bottom: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.week-event-chip:hover {
+  opacity: 0.8;
+}
+
+/* DAY VIEW */
+.calendar-day-view {
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.day-hour-row {
+  display: grid;
+  grid-template-columns: 70px 1fr;
+  min-height: 64px;
+  border-bottom: 1px solid #1a1a1a;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.day-hour-row:hover {
+  background: #1a1a1a;
+}
+
+.day-time-label {
+  font-size: 12px;
+  color: #555;
+  padding: 8px 12px 0 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.day-hour-content {
+  padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-event-block {
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.day-event-block:hover {
+  opacity: 0.8;
+}
+
 /* MEMORY & SEARCH */
 .search-bar {
   display: flex;
