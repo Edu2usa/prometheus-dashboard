@@ -5,7 +5,7 @@ import { useOpenClaw } from '../hooks/useOpenClaw';
 export function Settings() {
   const [agentConfig, setAgentConfig] = useState({});
   const [cronJobs, setCronJobs] = useState([]);
-  const { connected, mode, apiUrl, configure, connect, disconnect } = useOpenClaw();
+  const { connected, connecting, error, apiUrl, hasConfig, configure, connect, disconnect } = useOpenClaw();
   const [openClawUrl, setOpenClawUrl] = useState(apiUrl || '');
   const [openClawKey, setOpenClawKey] = useState('');
 
@@ -61,7 +61,7 @@ export function Settings() {
       <div className="settings-sections">
         {/* Agent Configuration */}
         <div className="settings-section">
-          <h3 className="settings-section-title">🤖 Executor Agent Configuration</h3>
+          <h3 className="settings-section-title">ð¤ Executor Agent Configuration</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {agents.execution.map((agent) => (
               <div key={agent.id} className="settings-item">
@@ -108,7 +108,7 @@ export function Settings() {
 
         {/* Integrations */}
         <div className="settings-section">
-          <h3 className="settings-section-title">🔗 Integrations</h3>
+          <h3 className="settings-section-title">ð Integrations</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {integrations.map((integration, idx) => (
               <div key={idx} className="settings-item">
@@ -128,10 +128,10 @@ export function Settings() {
 
         {/* OpenClaw Connection */}
         <div className="settings-section">
-          <h3 className="settings-section-title">🔮 OpenClaw Connection</h3>
+          <h3 className="settings-section-title">ð® OpenClaw Connection</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
-              <label className="modal-label">API URL (leave empty for demo mode)</label>
+              <label className="modal-label">API URL</label>
               <input
                 className="search-input"
                 style={{ width: '100%' }}
@@ -192,12 +192,15 @@ export function Settings() {
               )}
             </div>
             <div style={{ fontSize: '11px', color: '#888', lineHeight: '1.4' }}>
-              {connected ? (
-                <span style={{ color: '#00ff41' }}>
-                  ● Connected ({mode === 'demo' ? 'Demo Mode - showing simulated agent activity' : 'Live - connected to ' + apiUrl})
-                </span>
+              {error && (
+                <div style={{ color: '#ff4444', marginBottom: '6px' }}>{error}</div>
+              )}
+              {connecting ? (
+                <span style={{ color: '#ffd700' }}>â Connecting to Pegasus server...</span>
+              ) : connected ? (
+                <span style={{ color: '#00ff41' }}>â Connected to {apiUrl}</span>
               ) : (
-                <span>Configure your Pegasus server URL to connect to OpenClaw live, or leave empty for demo mode.</span>
+                <span>Enter your Pegasus server URL and API key to connect to OpenClaw.</span>
               )}
             </div>
           </div>
@@ -205,7 +208,7 @@ export function Settings() {
 
         {/* System Info */}
         <div className="settings-section">
-          <h3 className="settings-section-title">ℹ️ System Information</h3>
+          <h3 className="settings-section-title">â¹ï¸ System Information</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
               <div className="settings-label">App Version</div>
@@ -242,7 +245,7 @@ export function Settings() {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 className="settings-section-title">⏰ Cron Jobs</h3>
+          <h3 className="settings-section-title">â° Cron Jobs</h3>
           <button
             style={{
               background: '#00ff41',
@@ -316,7 +319,7 @@ export function Settings() {
           padding: '20px',
         }}
       >
-        <h3 className="settings-section-title">⚙️ Advanced Settings</h3>
+        <h3 className="settings-section-title">âï¸ Advanced Settings</h3>
         <div style={{ marginTop: '16px', color: '#888', fontSize: '13px' }}>
           <div style={{ marginBottom: '12px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
