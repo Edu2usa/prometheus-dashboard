@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import { Sidebar } from './components/Sidebar';
+import { OpenClawPanel } from './components/OpenClawPanel';
 import { Dashboard } from './pages/Dashboard';
 import { TasksBoard } from './pages/TasksBoard';
 import { ContentPipeline } from './pages/ContentPipeline';
@@ -36,6 +37,7 @@ function AppContent() {
           </Routes>
         </div>
       </main>
+      <OpenClawPanel />
     </div>
   );
 }

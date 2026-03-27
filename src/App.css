@@ -1120,52 +1120,456 @@ input, textarea {
   }
 }
 
+/* MOBILE TOP BAR */
+.mobile-topbar {
+  display: none;
+}
+
+/* MOBILE BOTTOM TAB BAR */
+.mobile-tabbar {
+  display: none;
+}
+
+.mobile-more-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 60px;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.mobile-more-menu {
+  background: #141414;
+  border: 1px solid #1e1e1e;
+  border-radius: 12px 12px 0 0;
+  padding: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.mobile-more-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  color: #888;
+  text-decoration: none;
+  font-size: 15px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.mobile-more-item:hover,
+.mobile-more-item.active {
+  background: #1a1a1a;
+  color: #00ff41;
+}
+
+.mobile-more-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  margin-top: 8px;
+  border-top: 1px solid #1e1e1e;
+}
+
+.status-dot.disconnected {
+  background: #555;
+}
+
 @media (max-width: 768px) {
   .app {
     flex-direction: column;
+    padding-top: 52px;
+    padding-bottom: 60px;
   }
 
   .sidebar {
-    width: 100%;
-    border-right: none;
-    border-bottom: 1px solid #1e1e1e;
-    padding: 12px;
-    flex-direction: row;
-    align-items: center;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: auto;
+    display: none;
   }
 
-  .sidebar-header {
-    margin-bottom: 0;
-    margin-right: 24px;
-  }
-
-  .sidebar-nav {
+  .mobile-topbar {
     display: flex;
-    gap: 8px;
-    margin-bottom: 0;
-    flex: 1;
-    overflow-x: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 52px;
+    background: #0a0a0a;
+    border-bottom: 1px solid #1e1e1e;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 1000;
   }
 
-  .sidebar-footer {
-    margin-left: 24px;
-    border-top: none;
-    border-left: 1px solid #1e1e1e;
-    padding-left: 16px;
+  .mobile-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mobile-tabbar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #0a0a0a;
+    border-top: 1px solid #1e1e1e;
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 4px;
+  }
+
+  .mobile-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 0;
+    color: #555;
+    text-decoration: none;
+    font-size: 10px;
+    flex: 1;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-tab.active {
+    color: #00ff41;
+  }
+
+  .mobile-tab-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .mobile-tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .main-content {
+    min-height: 0;
   }
 
   .content-area {
     padding: 16px;
+    overflow-x: hidden;
   }
 
+  /* Metrics */
   .metrics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
   }
 
-  .kanban-container {
-    height: calc(100vh - 250px);
+  .metric-card {
+    padding: 14px;
   }
+
+  .metric-value {
+    font-size: 28px;
+  }
+
+  .metric-label {
+    font-size: 10px;
+  }
+
+  /* Kanban - horizontal scroll */
+  .kanban-container {
+    height: calc(100vh - 180px);
+    gap: 12px;
+    padding-bottom: 12px;
+  }
+
+  .kanban-column {
+    min-width: 280px;
+    padding: 12px;
+  }
+
+  /* Page titles */
+  h1 {
+    font-size: 20px !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Cards and grids */
+  .agent-cards,
+  .memory-cards,
+  .contact-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .settings-sections {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* Calendar responsive */
+  .calendar-grid {
+    gap: 4px;
+  }
+
+  .calendar-weekdays {
+    gap: 4px;
+  }
+
+  .calendar-day {
+    padding: 4px;
+    font-size: 10px;
+  }
+
+  .calendar-day-number {
+    font-size: 11px;
+  }
+
+  .calendar-day-event {
+    font-size: 8px;
+  }
+
+  .calendar-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .calendar-controls {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  /* Activity feed */
+  .activity-item {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .activity-time {
+    min-width: unset;
+  }
+
+  /* Search bar */
+  .search-bar {
+    flex-direction: column;
+  }
+
+  /* Category tabs scrollable */
+  .category-tabs,
+  .filter-bar {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+  }
+
+  .tab,
+  .filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Modal full-width on mobile */
+  .modal {
+    width: 95%;
+    max-height: 85vh;
+    margin: 0 auto;
+  }
+
+  /* AI Team header */
+  .ai-team-title {
+    font-size: 20px;
+  }
+
+  /* Touch-friendly tap targets */
+  .nav-item,
+  .tab,
+  .filter-btn,
+  .calendar-btn,
+  .task-card,
+  .agent-card,
+  .memory-card,
+  .contact-card {
+    min-height: 44px;
+  }
+
+  /* OpenClaw command bar */
+  .openclaw-command-bar {
+    bottom: 68px;
+  }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content-area {
+    padding: 12px;
+  }
+
+  .mobile-tab-label {
+    font-size: 9px;
+  }
+
+  .mobile-tab-icon {
+    font-size: 18px;
+  }
+}
+
+/* OpenClaw Command Bar */
+.openclaw-command-bar {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 900;
+}
+
+.openclaw-fab {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #00ff41;
+  color: #0a0a0a;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 255, 65, 0.3);
+  transition: all 0.2s;
+}
+
+.openclaw-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 30px rgba(0, 255, 65, 0.5);
+}
+
+.openclaw-panel {
+  position: fixed;
+  bottom: 76px;
+  right: 16px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  background: #141414;
+  border: 1px solid #00ff41;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 255, 65, 0.15);
+  z-index: 901;
+}
+
+.openclaw-panel-header {
+  background: #0a0a0a;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #1e1e1e;
+}
+
+.openclaw-panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #00ff41;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.openclaw-panel-status {
+  font-size: 10px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.openclaw-panel-body {
+  padding: 12px 16px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.openclaw-log-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #1e1e1e;
+  font-size: 12px;
+}
+
+.openclaw-log-item:last-child {
+  border-bottom: none;
+}
+
+.openclaw-log-time {
+  color: #555;
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+}
+
+.openclaw-log-agent {
+  color: #00ff41;
+  font-weight: 600;
+  margin: 0 4px;
+}
+
+.openclaw-log-action {
+  color: #e0e0e0;
+}
+
+.openclaw-panel-input {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid #1e1e1e;
+  background: #0a0a0a;
+}
+
+.openclaw-input {
+  flex: 1;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #e0e0e0;
+  font-size: 13px;
+  font-family: system-ui;
+}
+
+.openclaw-input:focus {
+  outline: none;
+  border-color: #00ff41;
+}
+
+.openclaw-send {
+  background: #00ff41;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.openclaw-send:hover {
+  background: #00cc33;
 }

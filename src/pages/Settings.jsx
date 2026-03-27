@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { agents, getStatusColor } from '../data/agents';
+import { useOpenClaw } from '../hooks/useOpenClaw';
 
 export function Settings() {
   const [agentConfig, setAgentConfig] = useState({});
   const [cronJobs, setCronJobs] = useState([]);
+  const { connected, mode, apiUrl, configure, connect, disconnect } = useOpenClaw();
+  const [openClawUrl, setOpenClawUrl] = useState(apiUrl || '');
+  const [openClawKey, setOpenClawKey] = useState('');
 
   useEffect(() => {
     const saved = localStorage.getItem('agentConfig');
@@ -119,6 +123,83 @@ export function Settings() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* OpenClaw Connection */}
+        <div className="settings-section">
+          <h3 className="settings-section-title">🔮 OpenClaw Connection</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div>
+              <label className="modal-label">API URL (leave empty for demo mode)</label>
+              <input
+                className="search-input"
+                style={{ width: '100%' }}
+                placeholder="https://pegasus.yourdomain.com"
+                value={openClawUrl}
+                onChange={(e) => setOpenClawUrl(e.target.value)}
+              />
+            </div>
+            <div>
+              <label className="modal-label">API Key</label>
+              <input
+                className="search-input"
+                style={{ width: '100%' }}
+                type="password"
+                placeholder="Optional API key"
+                value={openClawKey}
+                onChange={(e) => setOpenClawKey(e.target.value)}
+              />
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {connected ? (
+                <button
+                  onClick={disconnect}
+                  style={{
+                    background: '#1a1a1a',
+                    color: '#ff4444',
+                    border: '1px solid #ff4444',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    flex: 1,
+                  }}
+                >
+                  Disconnect
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    configure(openClawUrl, openClawKey);
+                    connect();
+                  }}
+                  style={{
+                    background: '#00ff41',
+                    color: '#0a0a0a',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    flex: 1,
+                  }}
+                >
+                  Connect
+                </button>
+              )}
+            </div>
+            <div style={{ fontSize: '11px', color: '#888', lineHeight: '1.4' }}>
+              {connected ? (
+                <span style={{ color: '#00ff41' }}>
+                  ● Connected ({mode === 'demo' ? 'Demo Mode - showing simulated agent activity' : 'Live - connected to ' + apiUrl})
+                </span>
+              ) : (
+                <span>Configure your Pegasus server URL to connect to OpenClaw live, or leave empty for demo mode.</span>
+              )}
+            </div>
           </div>
         </div>
 
