@@ -1,49 +1,89 @@
 // OpenClaw Integration Service
 // Connects Prometheus Dashboard to Eduardo's OpenClaw AI system
 
+const DEFAULT_POLL_INTERVAL = 30000; // 30s
+
 class OpenClawService {
   constructor() {
     this.apiUrl = '';
     this.apiKey = '';
     this.connected = false;
+    this.connecting = false;
+    this.error = null;
     this.listeners = new Set();
     this.agentStatuses = {};
     this.activityLog = [];
     this.pollInterval = null;
+
+    // Restore persisted config on init
+    try {
+      const saved = localStorage.getItem('openclaw_config');
+      if (saved) {
+        const { apiUrl, apiKey } = JSON.parse(saved);
+        if (apiUrl) this.apiUrl = apiUrl;
+        if (apiKey) this.apiKey = apiKey;
+      }
+    } catch {
+      // ignore parse errors
+    }
   }
 
   configure(apiUrl, apiKey) {
-    this.apiUrl = apiUrl.replace(/\/$/, '');
-    this.apiKey = apiKey;
+    this.apiUrl = (apiUrl || '').replace(/\/$/, '');
+    this.apiKey = apiKey || '';
+    // Persist config
+    localStorage.setItem('openclaw_config', JSON.stringify({ apiUrl: this.apiUrl, apiKey: this.apiKey }));
+    this.notify();
   }
 
   async connect() {
     if (!this.apiUrl) {
-      // Mock mode - simulate connection
-      this.connected = true;
-      this._startMockPolling();
+      this.error = 'No API URL configured. Go to Settings â OpenClaw Connection and enter your Pegasus server URL.';
+      this.connected = false;
       this.notify();
-      return { success: true, mode: 'demo' };
+      return { success: false, error: this.error };
     }
+
+    this.connecting = true;
+    this.error = null;
+    this.notify();
 
     try {
       const resp = await fetch(`${this.apiUrl}/api/status`, {
         headers: this._headers(),
+        signal: AbortSignal.timeout(10000),
       });
-      if (resp.ok) {
-        this.connected = true;
-        this._startPolling();
+
+      if (!resp.ok) {
+        const text = await resp.text().catch(() => '');
+        this.error = `Server returned ${resp.status}${text ? ': ' + text.slice(0, 200) : ''}`;
+        this.connected = false;
+        this.connecting = false;
         this.notify();
-        return { success: true, mode: 'live' };
+        return { success: false, error: this.error };
       }
-      return { success: false, error: 'Server returned ' + resp.status };
+
+      this.connected = true;
+      this.connecting = false;
+      this.error = null;
+      this._startPolling();
+      this.notify();
+      return { success: true };
     } catch (err) {
-      return { success: false, error: err.message };
+      this.error = err.name === 'TimeoutError'
+        ? 'Connection timed out â check that your Pegasus server is running.'
+        : `Connection failed: ${err.message}`;
+      this.connected = false;
+      this.connecting = false;
+      this.notify();
+      return { success: false, error: this.error };
     }
   }
 
   disconnect() {
     this.connected = false;
+    this.connecting = false;
+    this.error = null;
     if (this.pollInterval) {
       clearInterval(this.pollInterval);
       this.pollInterval = null;
@@ -52,24 +92,8 @@ class OpenClawService {
   }
 
   async sendCommand(command, context = {}) {
-    if (!this.apiUrl) {
-      // Mock response
-      const mockResponse = {
-        id: Date.now(),
-        command,
-        status: 'received',
-        agent: context.agent || 'LEONIDAS',
-        timestamp: new Date().toISOString(),
-        response: `[DEMO] Command "${command}" routed to ${context.agent || 'LEONIDAS'}. In live mode, this would execute through OpenClaw.`
-      };
-      this.activityLog.unshift({
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        agent: mockResponse.agent,
-        action: `Processing: ${command}`,
-        status: 'active'
-      });
-      this.notify();
-      return mockResponse;
+    if (!this.connected) {
+      return { error: 'Not connected to OpenClaw. Connect first in Settings.' };
     }
 
     try {
@@ -77,30 +101,41 @@ class OpenClawService {
         method: 'POST',
         headers: this._headers(),
         body: JSON.stringify({ command, ...context }),
+        signal: AbortSignal.timeout(30000),
       });
+
+      if (!resp.ok) {
+        const text = await resp.text().catch(() => '');
+        return { error: `Command failed (${resp.status}): ${text.slice(0, 200)}` };
+      }
+
       const data = await resp.json();
       this.activityLog.unshift({
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         agent: data.agent || 'SYSTEM',
         action: data.action || command,
-        status: data.status || 'sent'
+        status: data.status || 'sent',
       });
+      if (this.activityLog.length > 50) this.activityLog.length = 50;
       this.notify();
       return data;
     } catch (err) {
-      return { error: err.message };
+      return { error: err.name === 'TimeoutError' ? 'Command timed out.' : err.message };
     }
   }
 
   async getAgentStatuses() {
-    if (!this.apiUrl) return this.agentStatuses;
+    if (!this.connected || !this.apiUrl) return this.agentStatuses;
 
     try {
       const resp = await fetch(`${this.apiUrl}/api/agents`, {
         headers: this._headers(),
+        signal: AbortSignal.timeout(10000),
       });
-      this.agentStatuses = await resp.json();
-      this.notify();
+      if (resp.ok) {
+        this.agentStatuses = await resp.json();
+        this.notify();
+      }
       return this.agentStatuses;
     } catch {
       return this.agentStatuses;
@@ -117,16 +152,19 @@ class OpenClawService {
   }
 
   notify() {
-    this.listeners.forEach(fn => fn(this.getState()));
+    const state = this.getState();
+    this.listeners.forEach((fn) => fn(state));
   }
 
   getState() {
     return {
       connected: this.connected,
+      connecting: this.connecting,
+      error: this.error,
       apiUrl: this.apiUrl,
+      hasConfig: Boolean(this.apiUrl),
       agentStatuses: this.agentStatuses,
       activityLog: this.activityLog.slice(0, 50),
-      mode: this.apiUrl ? 'live' : 'demo',
     };
   }
 
@@ -138,72 +176,7 @@ class OpenClawService {
 
   _startPolling() {
     if (this.pollInterval) clearInterval(this.pollInterval);
-    this.pollInterval = setInterval(() => this.getAgentStatuses(), 30000);
-  }
-
-  _startMockPolling() {
-    const mockAgents = ['LEONIDAS', 'TAXIS', 'HERMES', 'ATLAS', 'NEXUS', 'ORACLE', 'SENTINEL', 'KRONOS', 'DYNAMO', 'CYPHER', 'VANGUARD', 'PROMETHEUS'];
-    const mockActions = [
-      'Scanning maintenance pipeline',
-      'Routing new client request',
-      'Generating compliance report',
-      'Analyzing revenue metrics',
-      'Monitoring system health',
-      'Processing content queue',
-      'Auditing schedule conflicts',
-      'Evaluating lead quality',
-      'Optimizing resource allocation',
-      'Syncing with external APIs',
-    ];
-
-    // Generate initial statuses
-    mockAgents.forEach(name => {
-      this.agentStatuses[name] = {
-        status: Math.random() > 0.3 ? 'active' : 'idle',
-        lastAction: mockActions[Math.floor(Math.random() * mockActions.length)],
-        lastSeen: new Date().toISOString(),
-      };
-    });
-
-    // Initial activity
-    for (let i = 0; i < 5; i++) {
-      const agent = mockAgents[Math.floor(Math.random() * mockAgents.length)];
-      this.activityLog.push({
-        time: new Date(Date.now() - i * 120000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        agent,
-        action: mockActions[Math.floor(Math.random() * mockActions.length)],
-        status: Math.random() > 0.5 ? 'completed' : 'active'
-      });
-    }
-
-    if (this.pollInterval) clearInterval(this.pollInterval);
-    this.pollInterval = setInterval(() => {
-      const agent = mockAgents[Math.floor(Math.random() * mockAgents.length)];
-      const action = mockActions[Math.floor(Math.random() * mockActions.length)];
-
-      this.agentStatuses[agent] = {
-        status: 'active',
-        lastAction: action,
-        lastSeen: new Date().toISOString(),
-      };
-
-      this.activityLog.unshift({
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        agent,
-        action,
-        status: Math.random() > 0.5 ? 'completed' : 'active'
-      });
-
-      if (this.activityLog.length > 50) this.activityLog.pop();
-
-      // Randomly set some agents to idle
-      const randomAgent = mockAgents[Math.floor(Math.random() * mockAgents.length)];
-      if (this.agentStatuses[randomAgent]) {
-        this.agentStatuses[randomAgent].status = Math.random() > 0.4 ? 'active' : 'idle';
-      }
-
-      this.notify();
-    }, 15000);
+    this.pollInterval = setInterval(() => this.getAgentStatuses(), DEFAULT_POLL_INTERVAL);
   }
 }
 
