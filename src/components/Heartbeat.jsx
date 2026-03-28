@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 
-// Demo agent data â will be replaced by real OpenRouter/OpenClaw data when connected
+// Demo agent data Ã¢ÂÂ will be replaced by real OpenRouter/OpenClaw data when connected
 const DEMO_AGENTS = [
   {
     id: 'wayne',
     name: 'Wayne',
     role: 'Foreman Agent & Operator',
-    avatar: '\u{1F477}',
+    avatar: '👷',
     color: '#00ff41',
     session: 'wny-7f3c2a1e',
     model: 'qwen3:8b',
     status: 'Working',
     statusColor: '#00ff41',
     lastActive: '12s ago',
-    nextAction: { label: 'Check kanban board for blocked tasks', status: 'Queued ~1m', icon: '\u{1F504}' },
+    nextAction: { label: 'Check kanban board for blocked tasks', status: 'Queued ~1m', icon: '🔄' },
     currentAction: { label: 'Updating task STATUS-42 to "In Progress"', status: 'Active 2m', icon: '\u26A1' },
     pastActions: [
       { label: 'Resolved merge conflict in `mission_control.py`', time: '8m ago' },
@@ -28,15 +28,15 @@ const DEMO_AGENTS = [
     id: 'mona',
     name: 'Mona',
     role: 'Coding Agent & Engineer',
-    avatar: '\u{1F469}\u200D\u{1F4BB}',
+    avatar: '👩\u200D💻',
     color: '#ff6b35',
     session: 'mon-9b8d4f11',
     model: 'qwen2.5-coder:14b',
     status: 'Working',
     statusColor: '#00ff41',
     lastActive: '7s ago',
-    nextAction: { label: 'Implement kanban drag-and-drop with SQLite persistence', status: 'Queued ~2m', icon: '\u{1F534}' },
-    currentAction: { label: 'Writing `kanban_board.py` \u2014 implementing move_task()', status: 'Active 9m', icon: '\u{1F4BB}' },
+    nextAction: { label: 'Implement kanban drag-and-drop with SQLite persistence', status: 'Queued ~2m', icon: '🔴' },
+    currentAction: { label: 'Writing `kanban_board.py` \u2014 implementing move_task()', status: 'Active 9m', icon: '💻' },
     pastActions: [
       { label: 'Created database schema for tasks and columns', time: '25m ago' },
       { label: 'Built FastAPI endpoints for task CRUD', time: '32m ago' },
@@ -50,15 +50,15 @@ const DEMO_AGENTS = [
     id: 'doc',
     name: 'Doc',
     role: 'Visual & QA Agent',
-    avatar: '\u{1F916}',
+    avatar: '🤖',
     color: '#a78bfa',
     session: 'doc-a3f91d55',
     model: 'qwen3-vl:8b',
     status: 'Idle',
     statusColor: '#fbbf24',
     lastActive: '1m ago',
-    nextAction: { label: 'Capture screenshot of Kanban board and check for UI issues', status: 'Queued', icon: '\u{1F4F8}' },
-    currentAction: { label: 'Monitoring browser for user login and UI state changes', status: 'Idle', icon: '\u{1F441}\uFE0F' },
+    nextAction: { label: 'Capture screenshot of Kanban board and check for UI issues', status: 'Queued', icon: '📸' },
+    currentAction: { label: 'Monitoring browser for user login and UI state changes', status: 'Idle', icon: '👁\uFE0F' },
     pastActions: [
       { label: 'Validated responsive layout on /board', time: '3m ago' },
       { label: 'Checked auth flow \u2014 login modal OK', time: '7m ago' },
@@ -71,12 +71,12 @@ const DEMO_AGENTS = [
 ];
 
 const DEMO_COST_LOG = [
-  { time: '14:32:45', agent: 'Wayne', avatar: '\u{1F477}', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 2100, completionTokens: 1400, cost: 0.0024, activity: 'Updated task status and added comment' },
-  { time: '14:32:18', agent: 'Mona', avatar: '\u{1F469}\u200D\u{1F4BB}', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 5300, completionTokens: 3800, cost: 0.0087, activity: 'Wrote kanban_board.py (move_task function)' },
-  { time: '14:31:52', agent: 'Doc', avatar: '\u{1F916}', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 1200, completionTokens: 780, cost: 0.0011, activity: 'Analyzed screenshot: UI looks good, no issues found' },
-  { time: '14:30:10', agent: 'Wayne', avatar: '\u{1F477}', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 1800, completionTokens: 900, cost: 0.0019, activity: 'Pulled latest git changes and resolved conflict' },
-  { time: '14:28:33', agent: 'Mona', avatar: '\u{1F469}\u200D\u{1F4BB}', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 4200, completionTokens: 5100, cost: 0.0102, activity: 'Created FastAPI endpoint for task CRUD' },
-  { time: '14:25:01', agent: 'Doc', avatar: '\u{1F916}', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 2400, completionTokens: 1100, cost: 0.0018, activity: 'Validated responsive layout breakpoints' },
+  { time: '14:32:45', agent: 'Wayne', avatar: '👷', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 2100, completionTokens: 1400, cost: 0.0024, activity: 'Updated task status and added comment' },
+  { time: '14:32:18', agent: 'Mona', avatar: '👩\u200D💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 5300, completionTokens: 3800, cost: 0.0087, activity: 'Wrote kanban_board.py (move_task function)' },
+  { time: '14:31:52', agent: 'Doc', avatar: '🤖', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 1200, completionTokens: 780, cost: 0.0011, activity: 'Analyzed screenshot: UI looks good, no issues found' },
+  { time: '14:30:10', agent: 'Wayne', avatar: '👷', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 1800, completionTokens: 900, cost: 0.0019, activity: 'Pulled latest git changes and resolved conflict' },
+  { time: '14:28:33', agent: 'Mona', avatar: '👩\u200D💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 4200, completionTokens: 5100, cost: 0.0102, activity: 'Created FastAPI endpoint for task CRUD' },
+  { time: '14:25:01', agent: 'Doc', avatar: '🤖', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 2400, completionTokens: 1100, cost: 0.0018, activity: 'Validated responsive layout breakpoints' },
 ];
 
 function AgentCard({ agent }) {
@@ -103,7 +103,7 @@ function AgentCard({ agent }) {
 
         <div className="hb-agent-meta-row">
           <span className="hb-meta-label">SESSION</span>
-          <span className="hb-meta-value">{agent.session} \u{1F4CB}</span>
+          <span className="hb-meta-value">{agent.session} 📋</span>
           <span className="hb-meta-label" style={{ marginLeft: '16px' }}>LLM</span>
           <span className="hb-meta-value">{agent.model} \u270F\uFE0F</span>
         </div>
@@ -163,8 +163,8 @@ function AgentCard({ agent }) {
           <div className="hb-token-bar-fill" style={{ width: pct + '%', background: barColor }}></div>
         </div>
         <div className="hb-token-footer">
-          <span>\u{1F9E0} Context Window {agent.contextWindow}%</span>
-          <span>\u{1F4B0} Cost ${agent.cost.toFixed(4)}</span>
+          <span>🧠 Context Window {agent.contextWindow}%</span>
+          <span>💰 Cost ${agent.cost.toFixed(4)}</span>
         </div>
       </div>
     </div>
@@ -176,7 +176,7 @@ function TokenCostFeed({ costLog, viewRange, setViewRange }) {
     <div className="hb-cost-feed">
       <div className="hb-cost-header">
         <div>
-          <div className="hb-cost-title">\u{1F4C8} Token Cost Feed</div>
+          <div className="hb-cost-title">📈 Token Cost Feed</div>
           <div className="hb-cost-subtitle">Live usage and cost across all active LLM sessions</div>
         </div>
         <div className="hb-cost-view-select">
@@ -213,7 +213,7 @@ function TokenCostFeed({ costLog, viewRange, setViewRange }) {
                     <span style={{ fontWeight: 500 }}>{entry.agent}</span>
                   </span>
                 </td>
-                <td style={{ color: '#888' }}>{entry.session} \u{1F4CB}</td>
+                <td style={{ color: '#888' }}>{entry.session} 📋</td>
                 <td style={{ color: '#a78bfa' }}>{entry.model}</td>
                 <td>
                   <span style={{ color: '#00ff41' }}>\u2191 {(entry.promptTokens / 1000).toFixed(1)}K</span>
