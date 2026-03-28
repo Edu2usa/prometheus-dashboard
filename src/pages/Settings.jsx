@@ -64,7 +64,7 @@ export function Settings() {
       <div className="settings-sections">
         {/* Agent Configuration */}
         <div className="settings-section">
-          <h3 className="settings-section-title">ð¤ Executor Agent Configuration</h3>
+          <h3 className="settings-section-title">🤖 Executor Agent Configuration</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {agents.execution.map((agent) => (
               <div key={agent.id} className="settings-item">
@@ -111,7 +111,7 @@ export function Settings() {
 
         {/* Integrations */}
         <div className="settings-section">
-          <h3 className="settings-section-title">ð Integrations</h3>
+          <h3 className="settings-section-title">🔗 Integrations</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {integrations.map((integration, idx) => (
               <div key={idx} className="settings-item">
@@ -131,7 +131,7 @@ export function Settings() {
 
         {/* OpenClaw Connection */}
         <div className="settings-section">
-          <h3 className="settings-section-title">ð® OpenClaw Connection</h3>
+          <h3 className="settings-section-title">🔮 OpenClaw Connection</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
               <label className="modal-label">API URL</label>
@@ -199,9 +199,9 @@ export function Settings() {
                 <div style={{ color: '#ff4444', marginBottom: '6px' }}>{error}</div>
               )}
               {connecting ? (
-                <span style={{ color: '#ffd700' }}>â Connecting to Pegasus server...</span>
+                <span style={{ color: '#ffd700' }}>⏳ Connecting to Pegasus server...</span>
               ) : connected ? (
-                <span style={{ color: '#00ff41' }}>â Connected to {apiUrl}</span>
+                <span style={{ color: '#00ff41' }}>⏳ Connected to {apiUrl}</span>
               ) : (
                 <span>Enter your Pegasus server URL and API key to connect to OpenClaw.</span>
               )}
@@ -279,7 +279,7 @@ export function Settings() {
 
         {/* System Info */}
         <div className="settings-section">
-          <h3 className="settings-section-title">â¹ï¸ System Information</h3>
+          <h3 className="settings-section-title">ℹ️ System Information</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div>
               <div className="settings-label">App Version</div>
@@ -316,7 +316,7 @@ export function Settings() {
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-          <h3 className="settings-section-title">â° Cron Jobs</h3>
+          <h3 className="settings-section-title">⏰ Cron Jobs</h3>
           <button
             style={{
               background: '#00ff41',
@@ -390,7 +390,7 @@ export function Settings() {
           padding: '20px',
         }}
       >
-        <h3 className="settings-section-title">âï¸ Advanced Settings</h3>
+        <h3 className="settings-section-title">⚙️ Advanced Settings</h3>
         <div style={{ marginTop: '16px', color: '#888', fontSize: '13px' }}>
           <div style={{ marginBottom: '12px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
