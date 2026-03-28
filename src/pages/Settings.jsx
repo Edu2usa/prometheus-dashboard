@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { agents, getStatusColor } from '../data/agents';
 import { useOpenClaw } from '../hooks/useOpenClaw';
+import { useOpenRouter } from '../hooks/useOpenRouter';
 
 export function Settings() {
   const [agentConfig, setAgentConfig] = useState({});
@@ -8,6 +9,8 @@ export function Settings() {
   const { connected, connecting, error, apiUrl, hasConfig, configure, connect, disconnect } = useOpenClaw();
   const [openClawUrl, setOpenClawUrl] = useState(apiUrl || '');
   const [openClawKey, setOpenClawKey] = useState('');
+  const orState = useOpenRouter();
+  const [orApiKey, setOrApiKey] = useState(orState.apiKey || '');
 
   useEffect(() => {
     const saved = localStorage.getItem('agentConfig');
@@ -201,6 +204,74 @@ export function Settings() {
                 <span style={{ color: '#00ff41' }}>â Connected to {apiUrl}</span>
               ) : (
                 <span>Enter your Pegasus server URL and API key to connect to OpenClaw.</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+                {/* OpenRouter Connection */}
+        <div className="settings-section">
+          <h3 className="settings-section-title">🔗 OpenRouter.ai</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div>
+              <label className="modal-label">API Key</label>
+              <input
+                className="search-input"
+                style={{ width: '100%' }}
+                type="password"
+                placeholder="sk-or-v1-..."
+                value={orApiKey}
+                onChange={(e) => setOrApiKey(e.target.value)}
+              />
+            </div>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              {orState.connected ? (
+                <button
+                  onClick={orState.disconnect}
+                  style={{
+                    background: '#1a1a1a',
+                    color: '#ff4444',
+                    border: '1px solid #ff4444',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    flex: 1,
+                  }}
+                >
+                  Disconnect
+                </button>
+              ) : (
+                <button
+                  onClick={() => {
+                    orState.configure(orApiKey);
+                    orState.connect();
+                  }}
+                  style={{
+                    background: '#a78bfa',
+                    color: '#0a0a0a',
+                    border: 'none',
+                    borderRadius: '6px',
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    fontSize: '13px',
+                    fontWeight: '600',
+                    flex: 1,
+                  }}
+                >
+                  Connect to OpenRouter
+                </button>
+              )}
+            </div>
+            <div style={{ fontSize: '11px', color: '#888', lineHeight: '1.4' }}>
+              {orState.error && (
+                <div style={{ color: '#ff4444', marginBottom: '6px' }}>{orState.error}</div>
+              )}
+              {orState.connected ? (
+                <span style={{ color: '#a78bfa' }}>✅ Connected to OpenRouter.ai — Total cost: ${orState.totalCost.toFixed(4)}</span>
+              ) : (
+                <span>Enter your OpenRouter API key to track LLM costs in the Heartbeat dashboard.</span>
               )}
             </div>
           </div>
