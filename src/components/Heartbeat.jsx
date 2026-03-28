@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-// Demo agent data — will be replaced by real OpenRouter/OpenClaw data when connected
+// Demo agent data â will be replaced by real OpenRouter/OpenClaw data when connected
 const DEMO_AGENTS = [
   {
     id: 'wayne',
@@ -16,7 +16,7 @@ const DEMO_AGENTS = [
     nextAction: { label: 'Check kanban board for blocked tasks', status: 'Queued ~1m', icon: '\u{1F504}' },
     currentAction: { label: 'Updating task STATUS-42 to "In Progress"', status: 'Active 2m', icon: '\u26A1' },
     pastActions: [
-      { label: 'Resolved merge conflict in \`mission_control.py\`', time: '8m ago' },
+      { label: 'Resolved merge conflict in `mission_control.py`', time: '8m ago' },
       { label: 'Reviewed PR #87 and added comments', time: '12m ago' },
       { label: 'Pulled latest changes from main', time: '18m ago' },
     ],
@@ -36,7 +36,7 @@ const DEMO_AGENTS = [
     statusColor: '#00ff41',
     lastActive: '7s ago',
     nextAction: { label: 'Implement kanban drag-and-drop with SQLite persistence', status: 'Queued ~2m', icon: '\u{1F534}' },
-    currentAction: { label: 'Writing \`kanban_board.py\` \u2014 implementing move_task()', status: 'Active 9m', icon: '\u{1F4BB}' },
+    currentAction: { label: 'Writing `kanban_board.py` \u2014 implementing move_task()', status: 'Active 9m', icon: '\u{1F4BB}' },
     pastActions: [
       { label: 'Created database schema for tasks and columns', time: '25m ago' },
       { label: 'Built FastAPI endpoints for task CRUD', time: '32m ago' },
@@ -94,7 +94,7 @@ function AgentCard({ agent }) {
           <div className="hb-agent-identity">
             <div className="hb-agent-name">
               {agent.name}
-              <span className="hb-badge" style={{ background: agent.color + '22', color: agent.color, border: \`1px solid \${agent.color}44\` }}>AGENT</span>
+              <span className="hb-badge" style={{ background: agent.color + '22', color: agent.color, border: `1px solid ${agent.color}44` }}>AGENT</span>
             </div>
             <div className="hb-agent-role">{agent.role}</div>
           </div>
@@ -164,7 +164,7 @@ function AgentCard({ agent }) {
         </div>
         <div className="hb-token-footer">
           <span>\u{1F9E0} Context Window {agent.contextWindow}%</span>
-          <span>\u{1F4B0} Cost \${agent.cost.toFixed(4)}</span>
+          <span>\u{1F4B0} Cost ${agent.cost.toFixed(4)}</span>
         </div>
       </div>
     </div>
@@ -220,7 +220,7 @@ function TokenCostFeed({ costLog, viewRange, setViewRange }) {
                   {' '}
                   <span style={{ color: '#ff6b35' }}>\u2193 {(entry.completionTokens / 1000).toFixed(1)}K</span>
                 </td>
-                <td style={{ color: '#fbbf24', fontFamily: "'Courier New', monospace" }}>\${entry.cost.toFixed(4)}</td>
+                <td style={{ color: '#fbbf24', fontFamily: "'Courier New', monospace" }}>${entry.cost.toFixed(4)}</td>
                 <td style={{ color: '#ccc', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.activity}</td>
               </tr>
             ))}
