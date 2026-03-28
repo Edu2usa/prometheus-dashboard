@@ -1722,3 +1722,262 @@ input, textarea {
 .openclaw-send:hover {
   background: #00cc33;
 }
+
+
+/* ─── Dashboard Tab Bar ─── */
+.dash-tab-bar {
+  display: flex;
+  gap: 4px;
+  padding: 8px 0 16px;
+  border-bottom: 1px solid #1a1a1a;
+  margin-bottom: 20px;
+}
+.dash-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.dash-tab:hover { background: #1a1a1a; color: #ccc; }
+.dash-tab.active {
+  background: #1a1a1a;
+  border-color: #333;
+  color: #e0e0e0;
+}
+
+/* ─── Heartbeat Page ─── */
+.hb-container { padding: 0; }
+.hb-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.hb-page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #e0e0e0;
+  margin: 0;
+}
+.hb-page-subtitle {
+  font-size: 13px;
+  color: #555;
+  margin-left: 12px;
+}
+.hb-system-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #1a1a0a;
+  border: 1px solid #333300;
+  border-radius: 20px;
+  font-size: 12px;
+  color: #fbbf24;
+}
+
+/* Agent Cards Grid */
+.hb-agents-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.hb-agent-card {
+  background: #111;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hb-agent-top { padding: 16px; }
+.hb-agent-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.hb-agent-avatar { font-size: 28px; }
+.hb-agent-identity { flex: 1; }
+.hb-agent-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hb-badge {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.hb-agent-role {
+  font-size: 12px;
+  color: #888;
+  margin-top: 2px;
+}
+.hb-agent-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+.hb-meta-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.5px;
+}
+.hb-meta-value {
+  font-size: 12px;
+  color: #a78bfa;
+  font-family: 'Courier New', monospace;
+}
+
+/* Actions */
+.hb-actions {
+  border-top: 1px solid #1a1a1a;
+  padding: 0;
+}
+.hb-action-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid #0a0a0a;
+}
+.hb-action-icon { font-size: 16px; width: 24px; text-align: center; }
+.hb-action-content { flex: 1; min-width: 0; }
+.hb-action-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.hb-action-text {
+  font-size: 12px;
+  color: #ccc;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hb-action-badge {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+.hb-past-actions { padding: 12px 16px; border-top: 1px solid #1a1a1a; }
+.hb-past-action-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+  font-size: 12px;
+}
+
+/* Token Usage */
+.hb-token-section {
+  padding: 12px 16px;
+  border-top: 1px solid #1a1a1a;
+}
+.hb-token-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.hb-token-bar-bg {
+  height: 6px;
+  background: #1a1a1a;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.hb-token-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+.hb-token-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #555;
+}
+
+/* Token Cost Feed */
+.hb-cost-feed {
+  background: #111;
+  border: 1px solid #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.hb-cost-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.hb-cost-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+.hb-cost-subtitle {
+  font-size: 12px;
+  color: #555;
+  margin-top: 2px;
+}
+.hb-cost-view-select {
+  display: flex;
+  align-items: center;
+}
+.hb-select {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  color: #e0e0e0;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.hb-cost-table-wrap { overflow-x: auto; }
+.hb-cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.hb-cost-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #555;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #1a1a1a;
+}
+.hb-cost-table td {
+  padding: 10px 12px;
+  color: #ccc;
+  border-bottom: 1px solid #0a0a0a;
+}
+.hb-cost-table tr:hover td { background: #1a1a1a; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hb-agents-grid { grid-template-columns: 1fr; }
+  .hb-page-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+  .hb-cost-table { font-size: 11px; }
+}
