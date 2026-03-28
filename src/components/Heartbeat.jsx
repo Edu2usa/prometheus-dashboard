@@ -14,7 +14,7 @@ const DEMO_AGENTS = [
     statusColor: '#00ff41',
     lastActive: '12s ago',
     nextAction: { label: 'Check kanban board for blocked tasks', status: 'Queued ~1m', icon: '🔄' },
-    currentAction: { label: 'Updating task STATUS-42 to "In Progress"', status: 'Active 2m', icon: '\u26A1' },
+    currentAction: { label: 'Updating task STATUS-42 to "In Progress"', status: 'Active 2m', icon: '⚡' },
     pastActions: [
       { label: 'Resolved merge conflict in `mission_control.py`', time: '8m ago' },
       { label: 'Reviewed PR #87 and added comments', time: '12m ago' },
@@ -28,7 +28,7 @@ const DEMO_AGENTS = [
     id: 'mona',
     name: 'Mona',
     role: 'Coding Agent & Engineer',
-    avatar: '👩\u200D💻',
+    avatar: '👩‍💻',
     color: '#ff6b35',
     session: 'mon-9b8d4f11',
     model: 'qwen2.5-coder:14b',
@@ -36,7 +36,7 @@ const DEMO_AGENTS = [
     statusColor: '#00ff41',
     lastActive: '7s ago',
     nextAction: { label: 'Implement kanban drag-and-drop with SQLite persistence', status: 'Queued ~2m', icon: '🔴' },
-    currentAction: { label: 'Writing `kanban_board.py` \u2014 implementing move_task()', status: 'Active 9m', icon: '💻' },
+    currentAction: { label: 'Writing `kanban_board.py` — implementing move_task()', status: 'Active 9m', icon: '💻' },
     pastActions: [
       { label: 'Created database schema for tasks and columns', time: '25m ago' },
       { label: 'Built FastAPI endpoints for task CRUD', time: '32m ago' },
@@ -58,10 +58,10 @@ const DEMO_AGENTS = [
     statusColor: '#fbbf24',
     lastActive: '1m ago',
     nextAction: { label: 'Capture screenshot of Kanban board and check for UI issues', status: 'Queued', icon: '📸' },
-    currentAction: { label: 'Monitoring browser for user login and UI state changes', status: 'Idle', icon: '👁\uFE0F' },
+    currentAction: { label: 'Monitoring browser for user login and UI state changes', status: 'Idle', icon: '👁️' },
     pastActions: [
       { label: 'Validated responsive layout on /board', time: '3m ago' },
-      { label: 'Checked auth flow \u2014 login modal OK', time: '7m ago' },
+      { label: 'Checked auth flow — login modal OK', time: '7m ago' },
       { label: 'Captured screenshot: clean_dashboard.png', time: '15m ago' },
     ],
     tokenUsage: { used: 22000, total: 64000 },
@@ -72,10 +72,10 @@ const DEMO_AGENTS = [
 
 const DEMO_COST_LOG = [
   { time: '14:32:45', agent: 'Wayne', avatar: '👷', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 2100, completionTokens: 1400, cost: 0.0024, activity: 'Updated task status and added comment' },
-  { time: '14:32:18', agent: 'Mona', avatar: '👩\u200D💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 5300, completionTokens: 3800, cost: 0.0087, activity: 'Wrote kanban_board.py (move_task function)' },
+  { time: '14:32:18', agent: 'Mona', avatar: '👩‍💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 5300, completionTokens: 3800, cost: 0.0087, activity: 'Wrote kanban_board.py (move_task function)' },
   { time: '14:31:52', agent: 'Doc', avatar: '🤖', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 1200, completionTokens: 780, cost: 0.0011, activity: 'Analyzed screenshot: UI looks good, no issues found' },
   { time: '14:30:10', agent: 'Wayne', avatar: '👷', session: 'wny-7f3c2a1e', model: 'qwen3:8b', promptTokens: 1800, completionTokens: 900, cost: 0.0019, activity: 'Pulled latest git changes and resolved conflict' },
-  { time: '14:28:33', agent: 'Mona', avatar: '👩\u200D💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 4200, completionTokens: 5100, cost: 0.0102, activity: 'Created FastAPI endpoint for task CRUD' },
+  { time: '14:28:33', agent: 'Mona', avatar: '👩‍💻', session: 'mon-9b8d4f11', model: 'qwen2.5-coder:14b', promptTokens: 4200, completionTokens: 5100, cost: 0.0102, activity: 'Created FastAPI endpoint for task CRUD' },
   { time: '14:25:01', agent: 'Doc', avatar: '🤖', session: 'doc-a3f91d55', model: 'qwen3-vl:8b', promptTokens: 2400, completionTokens: 1100, cost: 0.0018, activity: 'Validated responsive layout breakpoints' },
 ];
 
@@ -98,14 +98,14 @@ function AgentCard({ agent }) {
             </div>
             <div className="hb-agent-role">{agent.role}</div>
           </div>
-          <span style={{ color: '#555', fontSize: '16px' }}>{expanded ? '\u25BE' : '\u203A'}</span>
+          <span style={{ color: '#555', fontSize: '16px' }}>{expanded ? '▾' : '›'}</span>
         </div>
 
         <div className="hb-agent-meta-row">
           <span className="hb-meta-label">SESSION</span>
           <span className="hb-meta-value">{agent.session} 📋</span>
           <span className="hb-meta-label" style={{ marginLeft: '16px' }}>LLM</span>
-          <span className="hb-meta-value">{agent.model} \u270F\uFE0F</span>
+          <span className="hb-meta-value">{agent.model} ✏️</span>
         </div>
 
         <div className="hb-agent-meta-row">
@@ -141,11 +141,11 @@ function AgentCard({ agent }) {
           <div className="hb-past-actions">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <span className="hb-action-label">Past Actions</span>
-              <span style={{ fontSize: '11px', color: '#00ff41', cursor: 'pointer' }}>View all \u2192</span>
+              <span style={{ fontSize: '11px', color: '#00ff41', cursor: 'pointer' }}>View all →</span>
             </div>
             {agent.pastActions.map((a, i) => (
               <div key={i} className="hb-past-action-item">
-                <span style={{ color: '#00ff41', marginRight: '6px' }}>\u2713</span>
+                <span style={{ color: '#00ff41', marginRight: '6px' }}>✓</span>
                 <span style={{ flex: 1, color: '#ccc' }}>{a.label}</span>
                 <span style={{ color: '#555', fontSize: '11px', whiteSpace: 'nowrap' }}>{a.time}</span>
               </div>
@@ -216,9 +216,9 @@ function TokenCostFeed({ costLog, viewRange, setViewRange }) {
                 <td style={{ color: '#888' }}>{entry.session} 📋</td>
                 <td style={{ color: '#a78bfa' }}>{entry.model}</td>
                 <td>
-                  <span style={{ color: '#00ff41' }}>\u2191 {(entry.promptTokens / 1000).toFixed(1)}K</span>
+                  <span style={{ color: '#00ff41' }}>↑ {(entry.promptTokens / 1000).toFixed(1)}K</span>
                   {' '}
-                  <span style={{ color: '#ff6b35' }}>\u2193 {(entry.completionTokens / 1000).toFixed(1)}K</span>
+                  <span style={{ color: '#ff6b35' }}>↓ {(entry.completionTokens / 1000).toFixed(1)}K</span>
                 </td>
                 <td style={{ color: '#fbbf24', fontFamily: "'Courier New', monospace" }}>${entry.cost.toFixed(4)}</td>
                 <td style={{ color: '#ccc', maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entry.activity}</td>
